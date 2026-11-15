@@ -11,7 +11,7 @@ interface Props {
   pageSize: number;
   shown: number;
   onPageChange: (p: number) => void;
-  onPageSizeChange?: (n: number) => void | undefined;
+  onPageSizeChange?: ((n: number) => void) | undefined;
   pageSizes?: number[] | undefined;
 }
 

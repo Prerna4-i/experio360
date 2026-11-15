@@ -14,7 +14,7 @@ import { StatusChart } from "./StatusChart";
 interface Props {
   status: LoadStatus;
   error?: string | undefined | null;
-  onRetry?: () => void | undefined;
+  onRetry?: (() => void) | undefined;
   /** Transactions already filtered by the dashboard date range + status. */
   transactions: Transaction[];
   merchants: Merchant[];

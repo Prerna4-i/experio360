@@ -18,7 +18,7 @@ export function useMerchants() {
   useEffect(() => {
     if (state.status === "idle") dispatch(fetchMerchants());
   }, [state.status, dispatch]);
-  return { ...state, retry: () => dispatch(fetchMerchants()) };
+  return { ...state, retry: () => void dispatch(fetchMerchants()) };
 }
 
 export function useTransactions() {
@@ -27,5 +27,5 @@ export function useTransactions() {
   useEffect(() => {
     if (state.status === "idle") dispatch(fetchTransactions());
   }, [state.status, dispatch]);
-  return { ...state, retry: () => dispatch(fetchTransactions()) };
+  return { ...state, retry: () => void dispatch(fetchTransactions()) };
 }

@@ -14,7 +14,7 @@ export function EmptyState({ title, description, action, icon }: { title: string
   );
 }
 
-export function ErrorState({ title = "Something went wrong", message, onRetry }: { title?: string | undefined; message: string; onRetry?: () => void | undefined }) {
+export function ErrorState({ title = "Something went wrong", message, onRetry }: { title?: string | undefined; message: string; onRetry?: (() => void) | undefined }) {
   return (
     <div role="alert" className="flex flex-col items-center justify-center gap-2 rounded-lg border border-destructive/30 bg-destructive/5 px-6 py-12 text-center">
       <div className="mb-1 grid size-10 place-items-center rounded-full bg-destructive/10 text-destructive">
