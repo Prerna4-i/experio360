@@ -13,12 +13,12 @@ import { StatusChart } from "./StatusChart";
 
 interface Props {
   status: LoadStatus;
-  error?: string | null;
-  onRetry?: () => void;
+  error?: string | undefined | null;
+  onRetry?: () => void | undefined;
   /** Transactions already filtered by the dashboard date range + status. */
   transactions: Transaction[];
   merchants: Merchant[];
-  range: { from?: string; to?: string };
+  range: { from?: string | undefined; to?: string | undefined };
 }
 
 export function DashboardView({ status, error, onRetry, transactions, merchants, range }: Props) {

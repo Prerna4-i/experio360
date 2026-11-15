@@ -106,24 +106,24 @@ function docsFor(status: MerchantStatus, rand: () => number, baseMs: number, idx
       id: `DOC-${idx}-${d}`,
       type,
       status: s,
-      uploadedAt: s === "Missing" ? undefined : iso(baseMs + d * 3_600_000),
-      note: s === "Rejected" ? "Document did not pass verification. See rejection reason." : undefined,
+      ...(s === "Missing" ? {} : { uploadedAt: iso(baseMs + d * 3_600_000) }),
+      ...(s === "Rejected" ? { note: "Document did not pass verification. See rejection reason." } : {}),
     };
   });
 }
 
 export function buildMerchants(seed = 360): Merchant[] {
   const rand = mulberry32(seed);
-  const pick = <T,>(arr: readonly T[]) => arr[Math.floor(rand() * arr.length)];
+  const pick = <T,>(arr: readonly T[]): T => arr[Math.floor(rand() * arr.length)] as T;
   const statuses = [...STATUS_PLAN];
   for (let i = statuses.length - 1; i > 0; i--) {
     const j = Math.floor(rand() * (i + 1));
-    [statuses[i], statuses[j]] = [statuses[j], statuses[i]];
+    [statuses[i], statuses[j]] = [statuses[j]!, statuses[i]!];
   }
 
   return statuses.map((status, i) => {
-    const prefix = PREFIXES[i % PREFIXES.length];
-    const suffix = SUFFIXES[(i * 7) % SUFFIXES.length];
+    const prefix = PREFIXES[i % PREFIXES.length]!;
+    const suffix = SUFFIXES[(i * 7) % SUFFIXES.length]!;
     const tradingName = `${prefix} ${suffix.word}`;
     const slug = tradingName.toLowerCase().replace(/[^a-z]+/g, "");
     const id = `MER-${String(1001 + i)}`;
@@ -180,20 +180,20 @@ export function buildMerchants(seed = 360): Merchant[] {
       tradingName,
       legalName: `${tradingName} Private Limited`,
       category: suffix.category,
-      city: CITIES[i % CITIES.length],
+      city: CITIES[i % CITIES.length]!,
       country: "India",
       registrationNumber: `SYN-U${String(70000 + i * 37).padStart(6, "0")}KA2026PTC`,
       taxId: `SYN29AAA${String(1000 + i)}Z${i % 9}`,
       contactName,
-      contactEmail: `${contactName.split(" ")[0].toLowerCase()}@${slug}.example`,
+      contactEmail: `${contactName.split(" ")[0]!.toLowerCase()}@${slug}.example`,
       contactPhone: `+91 00000 ${String(10000 + i * 113).slice(0, 5)}`,
       website: `https://${slug}.example`,
       expectedMonthlyVolume: Math.round((2 + rand() * 98) * 100_000),
       riskLevel: risk,
       createdAt: iso(createdMs),
-      updatedAt: audit[audit.length - 1].at,
+      updatedAt: audit[audit.length - 1]!.at,
       createdBy: maker.id,
-      submittedBy,
+      ...(submittedBy ? { submittedBy } : {}),
       status,
       documents: docsFor(status, rand, createdMs + 3_600_000, i),
       audit,
@@ -215,7 +215,7 @@ function pickStatus(r: number): TxnStatus {
 
 export function buildTransactions(merchants: Merchant[], count = 640, seed = 9001): Transaction[] {
   const rand = mulberry32(seed);
-  const pick = <T,>(arr: readonly T[]) => arr[Math.floor(rand() * arr.length)];
+  const pick = <T,>(arr: readonly T[]): T => arr[Math.floor(rand() * arr.length)] as T;
   const approved = merchants.filter((m) => m.status === "Approved");
   if (approved.length === 0) return [];
   const anchor = ANCHOR_DATE.getTime();
@@ -234,7 +234,7 @@ export function buildTransactions(merchants: Merchant[], count = 640, seed = 900
       at: iso(createdMs + offsetSec * 1000),
       label,
       tone,
-      detail,
+      ...(detail ? { detail } : {}),
     });
     const timeline: TxnEvent[] = [
       ev(0, "Payment initiated", "neutral", "Customer started checkout on merchant site."),

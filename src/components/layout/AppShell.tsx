@@ -23,7 +23,7 @@ function Brand() {
   );
 }
 
-function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
+function NavLinks({ onNavigate }: { onNavigate?: () => void | undefined }) {
   return (
     <nav aria-label="Primary" className="space-y-1">
       {NAV.map(({ to, label, icon: Icon, exact }) => (
@@ -42,7 +42,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   );
 }
 
-function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
+function SidebarBody({ onNavigate }: { onNavigate?: () => void | undefined }) {
   return (
     <div className="flex h-full flex-col gap-8 bg-sidebar px-3 py-5">
       <Brand />

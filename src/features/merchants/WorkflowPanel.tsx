@@ -25,8 +25,8 @@ interface Props {
   merchant: Merchant;
   user: MockUser | undefined;
   activeRole: Role;
-  busyAction?: TransitionAction | null;
-  onAction: (action: TransitionAction, reason?: string) => Promise<{ ok: boolean; error?: string }>;
+  busyAction?: TransitionAction | null | undefined;
+  onAction: (action: TransitionAction, reason?: string) => Promise<{ ok: boolean; error?: string | undefined }>;
 }
 
 export function WorkflowPanel({ merchant, user, activeRole, busyAction, onAction }: Props) {

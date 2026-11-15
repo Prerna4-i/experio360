@@ -64,7 +64,7 @@ export function applyTransition(
   action: TransitionAction,
   user: MockUser | undefined,
   activeRole: Role,
-  opts: { reason?: string; now: string; entryId: string },
+  opts: { reason?: string | undefined; now: string; entryId: string },
 ): TransitionResult {
   const check = canPerform(merchant, action, user, activeRole);
   if (!check.allowed) return { ok: false, error: check.reason };
@@ -85,15 +85,14 @@ export function applyTransition(
     toStatus: rule.to,
     ...(reason ? { reason } : {}),
   };
-  let submittedBy = merchant.submittedBy;
-  if (action === "submit") submittedBy = actor.id;
-  if (action === "revise") submittedBy = undefined;
+  const next: Merchant = { ...merchant };
+  if (action === "submit") next.submittedBy = actor.id;
+  if (action === "revise") delete next.submittedBy;
   return {
     ok: true,
     merchant: {
-      ...merchant,
+      ...next,
       status: rule.to,
-      submittedBy,
       updatedAt: opts.now,
       audit: [...merchant.audit, entry],
     },

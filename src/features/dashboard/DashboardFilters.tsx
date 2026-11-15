@@ -10,12 +10,12 @@ import { TXN_STATUSES, type TxnStatus } from "@/domain/types";
 
 interface Props {
   preset: RangePreset;
-  customFrom?: string;
-  customTo?: string;
+  customFrom?: string | undefined;
+  customTo?: string | undefined;
   status: TxnStatus | "all";
   maxDate: string;
   onPreset: (p: RangePreset) => void;
-  onCustom: (r: { from?: string; to?: string }) => void;
+  onCustom: (r: { from?: string | undefined; to?: string | undefined }) => void;
   onStatus: (s: TxnStatus | "all") => void;
   onReset: () => void;
 }

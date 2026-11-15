@@ -4,8 +4,8 @@ import type { RangePreset } from "@/domain/filters";
 
 export interface DashboardState {
   preset: RangePreset;
-  customFrom?: string;
-  customTo?: string;
+  customFrom?: string | undefined;
+  customTo?: string | undefined;
   status: TxnStatus | "all";
 }
 
@@ -18,7 +18,7 @@ const dashboardSlice = createSlice({
     setPreset(s, a: PayloadAction<RangePreset>) {
       s.preset = a.payload;
     },
-    setCustomRange(s, a: PayloadAction<{ from?: string; to?: string }>) {
+    setCustomRange(s, a: PayloadAction<{ from?: string | undefined; to?: string | undefined }>) {
       s.customFrom = a.payload.from;
       s.customTo = a.payload.to;
     },

@@ -11,8 +11,8 @@ interface Props {
   pageSize: number;
   shown: number;
   onPageChange: (p: number) => void;
-  onPageSizeChange?: (n: number) => void;
-  pageSizes?: number[];
+  onPageSizeChange?: (n: number) => void | undefined;
+  pageSizes?: number[] | undefined;
 }
 
 export function DataPagination({ page, pageCount, total, start, pageSize, shown, onPageChange, onPageSizeChange, pageSizes = [10, 20, 50] }: Props) {

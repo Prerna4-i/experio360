@@ -28,7 +28,7 @@ export const fetchMerchants = createAppAsyncThunk(
 
 export const transitionMerchant = createAppAsyncThunk(
   "merchants/transition",
-  async (arg: { merchantId: string; action: TransitionAction; reason?: string }, { getState, rejectWithValue }) => {
+  async (arg: { merchantId: string; action: TransitionAction; reason?: string | undefined }, { getState, rejectWithValue }) => {
     const { session } = getState();
     try {
       return await mockApi.transitionMerchant(session.networkMode, {

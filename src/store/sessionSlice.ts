@@ -10,7 +10,7 @@ export interface SessionState {
   networkMode: NetworkMode;
 }
 
-const initialState: SessionState = { userId: MOCK_USERS[0].id, activeRole: "maker", networkMode: "normal" };
+const initialState: SessionState = { userId: MOCK_USERS[0]!.id, activeRole: "maker", networkMode: "normal" };
 
 const sessionSlice = createSlice({
   name: "session",
@@ -20,7 +20,7 @@ const sessionSlice = createSlice({
       const user = findUser(action.payload);
       if (!user) return;
       state.userId = user.id;
-      if (!user.roles.includes(state.activeRole)) state.activeRole = user.roles[0];
+      if (!user.roles.includes(state.activeRole)) state.activeRole = user.roles[0] ?? "maker";
     },
     setActiveRole(state, action: PayloadAction<Role>) {
       const user = findUser(state.userId);

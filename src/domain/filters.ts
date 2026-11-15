@@ -29,8 +29,8 @@ export interface TxnFilters {
   search: string;
   merchantId: string; // "all" or merchant id
   status: TxnStatus | "all";
-  from?: string; // yyyy-mm-dd (UTC, inclusive)
-  to?: string; // yyyy-mm-dd (UTC, inclusive)
+  from?: string | undefined; // yyyy-mm-dd (UTC, inclusive)
+  to?: string | undefined; // yyyy-mm-dd (UTC, inclusive)
 }
 
 export const EMPTY_TXN_FILTERS: TxnFilters = { search: "", merchantId: "all", status: "all" };
@@ -51,7 +51,7 @@ export function filterTransactions(txns: Transaction[], f: TxnFilters): Transact
 export type TxnSortKey = "createdAt" | "amount" | "merchantName" | "status";
 export const txnSortValue = (t: Transaction, k: TxnSortKey) => (k === "amount" ? t.amount : t[k]);
 
-export function validateDateRange(from?: string, to?: string): string | null {
+export function validateDateRange(from?: string | undefined, to?: string): string | null {
   if (from && to && from > to) return "Start date must be on or before the end date.";
   return null;
 }
@@ -80,7 +80,7 @@ export const merchantSortValue = (m: Merchant, k: MerchantSortKey) => (k === "st
 
 export type RangePreset = "7d" | "30d" | "90d" | "custom";
 
-export function resolveRange(preset: RangePreset, anchor: Date, custom: { from?: string; to?: string } = {}) {
+export function resolveRange(preset: RangePreset, anchor: Date, custom: { from?: string | undefined; to?: string | undefined } = {}): { from: string | undefined; to: string | undefined } {
   if (preset === "custom") return { from: custom.from, to: custom.to };
   const days = preset === "7d" ? 7 : preset === "30d" ? 30 : 90;
   const to = anchor.toISOString().slice(0, 10);

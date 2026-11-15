@@ -73,16 +73,17 @@ export const mockApi = {
 
   async transitionMerchant(
     mode: NetworkMode,
-    req: { merchantId: string; action: TransitionAction; actorId: string; role: Role; reason?: string },
+    req: { merchantId: string; action: TransitionAction; actorId: string; role: Role; reason?: string | undefined },
   ): Promise<Merchant> {
     await network(mode);
     const d = getDb();
     const idx = d.merchants.findIndex((m) => m.id === req.merchantId);
     if (idx < 0) throw new MockApiError("Merchant not found.", "NOT_FOUND");
-    const result = applyTransition(d.merchants[idx], req.action, findUser(req.actorId), req.role, {
+    const current = d.merchants[idx]!;
+    const result = applyTransition(current, req.action, findUser(req.actorId), req.role, {
       reason: req.reason,
       now: now(),
-      entryId: `${req.merchantId}-A${d.merchants[idx].audit.length + 1}`,
+      entryId: `${req.merchantId}-A${current.audit.length + 1}`,
     });
     if (!result.ok) throw new MockApiError(result.error, "INVALID_TRANSITION");
     d.merchants[idx] = result.merchant;

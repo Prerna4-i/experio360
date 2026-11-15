@@ -67,7 +67,7 @@ function MerchantDetailPage() {
 
   const onAction = async (action: TransitionAction, reason?: string) => {
     const res = await dispatch(transitionMerchant({ merchantId: merchant.id, action, reason }));
-    return transitionMerchant.fulfilled.match(res) ? { ok: true } : { ok: false, error: res.payload };
+    return transitionMerchant.fulfilled.match(res) ? { ok: true } : { ok: false, error: res.payload ?? "Action failed" };
   };
 
   return (

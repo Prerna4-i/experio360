@@ -24,8 +24,8 @@ export interface KycDocument {
   id: string;
   type: string;
   status: DocStatus;
-  uploadedAt?: string;
-  note?: string;
+  uploadedAt?: string | undefined;
+  note?: string | undefined;
 }
 
 export type WorkflowAction = "create" | "submit" | "startReview" | "approve" | "reject" | "revise";
@@ -40,7 +40,7 @@ export interface AuditEntry {
   at: string;
   fromStatus: MerchantStatus | null;
   toStatus: MerchantStatus;
-  reason?: string;
+  reason?: string | undefined;
 }
 
 export type RiskLevel = "Low" | "Medium" | "High";
@@ -63,7 +63,7 @@ export interface Merchant {
   createdAt: string;
   updatedAt: string;
   createdBy: string;
-  submittedBy?: string;
+  submittedBy?: string | undefined;
   status: MerchantStatus;
   documents: KycDocument[];
   audit: AuditEntry[];
@@ -78,7 +78,7 @@ export interface TxnEvent {
   id: string;
   at: string;
   label: string;
-  detail?: string;
+  detail?: string | undefined;
   tone: EventTone;
 }
 

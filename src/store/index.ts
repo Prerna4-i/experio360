@@ -9,7 +9,7 @@ export type RootState = ReturnType<typeof rootReducer>;
 
 /** One store per app instance (and per test) — never a module-level singleton, for SSR safety. */
 export function makeStore(preloadedState?: Partial<RootState>) {
-  return configureStore({ reducer: rootReducer, preloadedState });
+  return configureStore({ reducer: rootReducer, ...(preloadedState ? { preloadedState } : {}) });
 }
 
 export type AppStore = ReturnType<typeof makeStore>;
